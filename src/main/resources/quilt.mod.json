@@ -1,25 +1,26 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "com.example",
-		"id": "example_mod",
+		"group": "com.foulfortunefeline",
+		"id": "fireflies",
 		"version": "${version}",
 		"metadata": {
-			"name": "Mod Name",
-			"description": "A short description of your mod.",
+			"name": "Fireflies",
+			"description": "I added fireflies cuz Mojang wouldn't",
+			"license": "LGPL-3.0-or-later",
 			"contributors": {
-				"Me!": "Owner"
+				"Owner": "foul-fortune-feline"
 			},
 			"contact": {
-				"homepage": "https://example.com/",
-				"issues": "https://github.com/QuiltMC/quilt-template-mod/issues",
-				"sources": "https://github.com/QuiltMC/quilt-template-mod"
+				"homepage": "https://github.com/foul-fortune-feline",
+				"issues": "https://github.com/foul-fortune-feline/fireflies/issues",
+				"sources": "https://github.com/foul-fortune-feline/fireflies"
 			},
-			"icon": "assets/example_mod/icon.png"
+			"icon": "assets/fireflies/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.example.example_mod.ExampleMod"
+			"init": "com.foulfortunefeline.fireflies.Fireflies"
 		},
 		"depends": [
 			{
@@ -36,5 +37,5 @@
 			}
 		]
 	},
-	"mixin": "example_mod.mixins.json"
+	"mixin": "fireflies.mixins.json"
 }
