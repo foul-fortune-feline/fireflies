@@ -16,21 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.foulfortunefeline.fireflies;
+package foulfortunefeline.fireflies.client;
 
+import foulfortunefeline.fireflies.Fireflies;
+import foulfortunefeline.fireflies.client.render.entity.FireflyEntityRenderer;
+import foulfortunefeline.fireflies.client.render.entity.model.FireflyEntityModel;
+import foulfortunefeline.fireflies.client.render.entity.model.ModEntityModels;
+import foulfortunefeline.fireflies.entities.ModEntities;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
-public class Fireflies implements ModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod name as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-	public static final Logger LOGGER = LoggerFactory.getLogger("Example Mod");
+public class FirefliesClient implements ClientModInitializer {
 
 	@Override
-	public void onInitialize(ModContainer mod) {
-		LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
+	public void onInitializeClient(ModContainer mod) {
+		ModEntityModels.registerEntityModels();
 	}
 }

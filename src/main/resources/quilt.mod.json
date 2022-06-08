@@ -20,7 +20,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.foulfortunefeline.fireflies.Fireflies"
+			"init": "foulfortunefeline.fireflies.Fireflies",
+			"client_init": "foulfortunefeline.fireflies.client.FirefliesClient"
 		},
 		"depends": [
 			{
