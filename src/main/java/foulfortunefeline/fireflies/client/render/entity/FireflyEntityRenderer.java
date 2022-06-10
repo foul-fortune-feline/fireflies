@@ -22,14 +22,35 @@ import foulfortunefeline.fireflies.Fireflies;
 import foulfortunefeline.fireflies.client.render.entity.model.FireflyEntityModel;
 import foulfortunefeline.fireflies.client.render.entity.model.ModEntityModels;
 import foulfortunefeline.fireflies.entities.FireflyEntity;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3f;
+import org.jetbrains.annotations.NotNull;
 
-public class FireflyEntityRenderer extends LivingEntityRenderer<FireflyEntity, FireflyEntityModel<FireflyEntity>> {
+public class FireflyEntityRenderer extends EntityRenderer<FireflyEntity> {
+	protected FireflyEntityModel<FireflyEntity> model;
+
 	public FireflyEntityRenderer(EntityRendererFactory.Context context) {
-		super(context, new FireflyEntityModel<>(context.getPart(ModEntityModels.MODEL_FIREFLY_LAYER)), 0f);
+		super(context);
+		model = new FireflyEntityModel<>(context.getPart(ModEntityModels.MODEL_FIREFLY_LAYER));
+	}
+
+	@Override
+	public void render(@NotNull FireflyEntity entity, float yaw, float tickDelta, @NotNull MatrixStack matrices,
+					   @NotNull VertexConsumerProvider vertexConsumers, int light) {
+		matrices.push();
+
+		matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180F - entity.getYaw(tickDelta)));
+		float color = Math.min(entity.getBrightness(), 10) / 20f + .5f;
+		model.render(matrices, vertexConsumers.getBuffer(model.getLayer(getTexture(entity))), light, OverlayTexture.DEFAULT_UV,
+				color, color, color, 1.0f);
+		matrices.pop();
+		super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
 	}
 
 	@Override
@@ -39,6 +60,6 @@ public class FireflyEntityRenderer extends LivingEntityRenderer<FireflyEntity, F
 
 	@Override
 	protected int getBlockLight(FireflyEntity entity, BlockPos pos) {
-		return 15;
+		return Math.max(entity.getBrightness(), super.getBlockLight(entity, pos));
 	}
 }

@@ -37,9 +37,8 @@ public class ModEntities {
 	);
 
 
-	public static void registerEntities() {
+	public static void init() {
 		FabricDefaultAttributeRegistry.register(FIREFLY, FireflyEntity.createMobAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, 1)
-				.add(EntityAttributes.GENERIC_FLYING_SPEED, 5));
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, 1));
 	}
 }

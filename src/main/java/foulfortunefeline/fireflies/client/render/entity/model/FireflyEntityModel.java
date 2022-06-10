@@ -35,9 +35,9 @@ public class FireflyEntityModel<T extends FireflyEntity> extends SinglePartEntit
 		ModelData modelData = new ModelData();
 		ModelPartData modelPartData = modelData.getRoot();
 		modelPartData.addChild(EntityModelPartNames.BODY, ModelPartBuilder.create().uv(0, 0)
-						.cuboid(-0.25F, 23F, -0.5F, 0.5F, 0.5F, 1.0F), ModelTransform.NONE
+						.cuboid(-0.5F, 0.5F, -1F, 1F, 1F, 2.0F), ModelTransform.NONE
 		);
-		return TexturedModelData.of(modelData, 3, 2);
+		return TexturedModelData.of(modelData, 6, 4);
 	}
 
 	@Override

@@ -24,17 +24,15 @@ import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
-
 public class Fireflies implements ModInitializer {
 	public static final String MODID = "fireflies";
 	public static final Logger LOGGER = LoggerFactory.getLogger("Fireflies");
-	public static final Random RANDOM = new Random(System.currentTimeMillis());
+
 
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("Initializing {}...", mod.metadata().name());
 
-		ModEntities.registerEntities();
+		ModEntities.init();
 	}
 }

@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.AmbientEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -37,25 +38,29 @@ public class FireflyEntity extends AmbientEntity {
 	private static final float ACCELERATION = 0.02f;
 	private static final double VERT_SPEED_SCALE = 0.5d;
 
+	protected int flashTicks = 0;
+
 	protected FireflyEntity(EntityType<? extends AmbientEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 
 	@Override
-	protected void mobTick() {
-		super.mobTick();
+	public void baseTick() {
+		super.baseTick();
+
+		tickFlash();
 		Vec3d curVelocity = getVelocity();
 		Vec3d newVelocity = clampVelocity(curVelocity.add(
-				MathHelper.nextGaussian(Fireflies.RANDOM, 0.0f, ACCELERATION),
-				MathHelper.nextGaussian(Fireflies.RANDOM, 0.0f, ACCELERATION),
-				MathHelper.nextGaussian(Fireflies.RANDOM, 0.0f, ACCELERATION))
+				MathHelper.nextGaussian(world.getRandom(), 0.0f, ACCELERATION),
+				MathHelper.nextGaussian(world.getRandom(), 0.0f, ACCELERATION),
+				MathHelper.nextGaussian(world.getRandom(), 0.0f, ACCELERATION))
 				.multiply(1.0d, VERT_SPEED_SCALE, 1.0d));
 		setVelocity(newVelocity);
 
 		setYaw(-((float)MathHelper.atan2(newVelocity.x, newVelocity.z)) * 180.0F / (float)Math.PI);
-	}
 
+	}
 
 	private static Vec3d clampVelocity(Vec3d inputVector) {
 		double curSpeed = inputVector.length();
@@ -68,6 +73,35 @@ public class FireflyEntity extends AmbientEntity {
 		return inputVector;
 	}
 
+	protected void tickFlash() {
+		flashTicks--;
+		if (flashTicks > 0) {
+			return;
+		}
+
+		if (flashTicks < -20 && MathHelper.nextInt(world.random, -flashTicks - 20, 100) >= 95) {
+			flashTicks = 20;
+		}
+	}
+
+	public int getBrightness() {
+		if (flashTicks <= 0) {
+			return 0;
+		}
+		return Math.min(flashTicks, 15);
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		nbt.putInt("flashTicks", flashTicks);
+		super.writeCustomDataToNbt(nbt);
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		flashTicks = nbt.getInt("flashTicks");
+		super.readCustomDataFromNbt(nbt);
+	}
 
 	@Override
 	public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
@@ -103,10 +137,5 @@ public class FireflyEntity extends AmbientEntity {
 
 	@Override
 	protected void playSwimSound(float volume) {
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return super.hasCustomName();
 	}
 }
